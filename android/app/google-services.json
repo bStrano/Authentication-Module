@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "83178434542",
+    "project_id": "stralomauthentication",
+    "storage_bucket": "stralomauthentication.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:83178434542:android:3b2322fda6d1869f1aa8ff",
+        "android_client_info": {
+          "package_name": "com.stralom.authentication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "83178434542-e5iotoqtdn00mgjftded9datbq5kt9s8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3aX8OZVkaB5PWXZnmUahJ0BntSzYPxDw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "83178434542-e5iotoqtdn00mgjftded9datbq5kt9s8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,8 +1,8 @@
 import {createStackNavigator} from '@react-navigation/stack';
 
 import React from 'react';
-import LoginScreen from "../../screens/LoginScreen";
-import RegistrationScreen from "../../screens/RegistrationScreen";
+import LoginScreen from "../../screens/Login/LoginScreen";
+import RegistrationScreen from "../../screens/Register/RegistrationScreen";
 
 
 function AuthenticationStack() {

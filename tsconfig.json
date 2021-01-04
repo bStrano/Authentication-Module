@@ -69,6 +69,9 @@
     // "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
     "resolveJsonModule": true
   },
+  "include": [
+    "declarations.d.ts"
+  ],
   "exclude": [
     "node_modules",
     "babel.config.js",

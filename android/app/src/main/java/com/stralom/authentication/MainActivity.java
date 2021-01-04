@@ -1,4 +1,4 @@
-package com.authenticationmodule;
+package com.stralom.authentication;
 
 import com.facebook.react.ReactActivity;
 

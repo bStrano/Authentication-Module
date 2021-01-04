@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AuthenticationModule</string>
+    <string name="facebook_app_id">196734668793982</string>
 </resources>
