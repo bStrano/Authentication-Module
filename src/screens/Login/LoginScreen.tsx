@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from 'react';
-import {Image, NativeModules, Pressable, StyleSheet, View} from 'react-native';
+import {NativeModules, Pressable, StyleSheet, View} from 'react-native';
 import {ButtonWB, Divider, Text, useTheme} from 'react-native-stralom-components';
 import TextInputRounded from "../../components/TextInputRounded";
 import auth from '@react-native-firebase/auth';
@@ -7,11 +7,11 @@ import {GoogleSignin} from "@react-native-community/google-signin";
 import GoogleIcon from "../../icons/GoogleIcon";
 import SignInMethodsCard from "./components/SignInMethodsCard";
 import {AccessToken, LoginManager} from 'react-native-fbsdk';
-import stralomLogo from "../../../assets/images/stralomLogo.png"
 import FacebookIcon from "../../icons/FacebookIcon";
 import TwitterIcon from "../../icons/TwitterIcon";
-import ImageBackgroundView from "../../components/AnimationBackgroundView";
 import AuthenticationController from "../../controllers/AuthenticationController";
+import AuthView from "../components/AuthView";
+import Toast from "react-native-toast-message";
 
 const {RNTwitterSignIn} = NativeModules;
 
@@ -20,7 +20,7 @@ const initialCredentials = {
     password: '',
 };
 
-function LoginScreen() {
+function LoginScreen({navigation, onError}: any) {
     const theme = useTheme();
     const [credentials, setCredentials] = useState(initialCredentials);
     const styles = stylesheet({})
@@ -66,38 +66,51 @@ function LoginScreen() {
     }, []);
 
     const onStralomSignIn = useCallback(async () => {
-        return await AuthenticationController.login(credentials.email, credentials.password)
+        try {
+            if (await validateForm()) {
+                return await AuthenticationController.login(credentials.email, credentials.password)
+            }
+        } catch (e) {
+            console.error(e)
+        }
+
     }, [])
 
     const validateForm = useCallback(async () => {
-
+        if (!credentials.password || !credentials.email) {
+            Toast.show({
+                text1: "Falha ao realizar autenticação",
+                text2: "Verifique o usuário e a senha e tente novamente",
+                type: 'error',
+                visibilityTime: 8000,
+                position: "bottom"
+            })
+            return false
+        }
+        return true
     }, [])
     return (
-        <ImageBackgroundView>
-            <View style={{flex: 1, backgroundColor: theme.primary.light + 'CC', justifyContent: 'center'}}>
-                <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                    <Image source={stralomLogo} style={{width: 120, height: 120}}/>
-                </View>
-                <TextInputRounded value={credentials.email}
-                                  label={"E-MAIL"}
-                                  autoCompleteType={'email'}
-                                  keyboardType={'email-address'}
-                                  returnKeyType={'next'}
-                                  onChangeText={(email: string) =>
-                                      setCredentials({...credentials, email})
-                                  }
-                />
-                <TextInputRounded value={credentials.password}
-                                  label={"SENHA"}
-                                  isPassword
-                                  autoCompleteType={'password'}
-                                  returnKeyType={'done'}
-                                  onChangeText={(password: string) =>
-                                      setCredentials({...credentials, password})
-                                  }
-                />
-                <ButtonWB label={'ENTRAR'} backgroundColor={theme.primary.dark}/>
-                <Text variant={"caption"} style={styles.forgotPasswordText}>Esqueceu sua senha?</Text>
+        <AuthView>
+            <TextInputRounded value={credentials.email}
+                              label={"E-MAIL"}
+                              autoCompleteType={'email'}
+                              keyboardType={'email-address'}
+                              returnKeyType={'next'}
+                              onChangeText={(email: string) =>
+                                  setCredentials({...credentials, email})
+                              }
+            />
+            <TextInputRounded value={credentials.password}
+                              label={"SENHA"}
+                              isPassword
+                              autoCompleteType={'password'}
+                              returnKeyType={'done'}
+                              onChangeText={(password: string) =>
+                                  setCredentials({...credentials, password})
+                              }
+            />
+            <ButtonWB label={'ENTRAR'} backgroundColor={theme.primary.dark} onPress={onStralomSignIn}/>
+            <Text variant={"caption"} style={styles.forgotPasswordText}>Esqueceu sua senha?</Text>
 
                 <View style={{flexDirection: 'row', padding: 20}}>
                     <Divider width={null} style={{flex: 1, borderWidth: 1, borderBottomColor: theme.primary.main}}/>
@@ -113,16 +126,13 @@ function LoginScreen() {
                     <SignInMethodsCard onPress={onTwitterSignIn} icon={<TwitterIcon/>}/>
                 </View>
 
-                <Pressable style={styles.registerContainer}>
-                    <Text variant={"subtitle"} style={{textAlign: 'center'}}>Não possui uma conta ?
-                        <Text variant={"caption"} style={{color: theme.primary.dark, fontWeight: 'bold'}}> Cadastre-se
-                            agora! </Text>
-                    </Text>
-                </Pressable>
-
-
-            </View>
-        </ImageBackgroundView>
+            <Pressable onPress={() => navigation.navigate("RegistrationScreen")} style={styles.registerContainer}>
+                <Text variant={"subtitle"} style={{textAlign: 'center'}}>Não possui uma conta ?
+                    <Text variant={"caption"} style={{color: theme.primary.dark, fontWeight: 'bold'}}> Cadastre-se
+                        agora! </Text>
+                </Text>
+            </Pressable>
+        </AuthView>
     );
 }
 

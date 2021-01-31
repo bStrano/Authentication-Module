@@ -19,12 +19,11 @@
     "@react-navigation/stack": "^5.12.3",
     "@types/axios": "^0.14.0",
     "@types/btoa": "^1.2.3",
-    "@types/crypto-js": "^4.0.1",
     "@types/react": "^17.0.0",
     "@types/react-native-fbsdk": "^1.1.1",
     "axios": "^0.21.1",
     "btoa": "^1.2.1",
-    "crypto-js": "^4.0.0",
+    "crypto-js": "^3.3.0",
     "lottie-react-native": "^3.5.0",
     "normalize-path": "^2.1.1",
     "react": "16.13.1",
@@ -43,6 +42,7 @@
     "yup": "^0.32.8"
   },
   "devDependencies": {
+    "@types/crypto-js": "^4.0.1",
     "@babel/cli": "^7.12.10",
     "@babel/core": "^7.12.10",
     "@babel/highlight": "^7.10.4",

@@ -13,7 +13,7 @@ function AuthenticationStack() {
                 component={LoginScreen}
                 options={{headerShown: false}}
             />
-            <Stack.Screen name="RegistrationScreen" component={RegistrationScreen}/>
+            <Stack.Screen name="RegistrationScreen" component={RegistrationScreen} options={{headerShown: false}}/>
         </Stack.Navigator>
     );
 }
