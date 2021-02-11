@@ -14,7 +14,7 @@ function AuthView(props: IAuthViewProps) {
         <ImageBackgroundView>
             <View style={{flex: 1, backgroundColor: theme.primary.light + 'CC', justifyContent: 'center'}}>
                 <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                    <Image source={stralomLogo} style={{width: 120, height: 120}}/>
+                    <Image source={stralomLogo} style={{width: 120, height: 120, marginVertical: 10}}/>
                 </View>
 
                 {props.children}
