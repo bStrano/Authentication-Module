@@ -38,15 +38,13 @@ function RegistrationScreen({navigation}: any) {
           onChangeText={setConfirmPassword}
           isPassword={true}
           label={'Confirmar senha'}
-
           icon={{name: 'lock', class: 'Entypo'}}
-
         />
       </View>
 
       <ButtonWB
         label={'CADASTRAR'}
-        backgroundColor={theme.primary.main}
+        backgroundColor={theme.primary.main.color}
         customStyles={{container: {marginHorizontal: '3%'}}}
         onPress={() => null}
       />

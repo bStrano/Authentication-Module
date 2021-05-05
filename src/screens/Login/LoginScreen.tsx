@@ -1,6 +1,11 @@
 import React, {useCallback, useState} from 'react';
 import {NativeModules, Pressable, StyleSheet, View} from 'react-native';
-import {ButtonWB, Divider, Text, useTheme,} from 'react-native-stralom-components';
+import {
+  ButtonWB,
+  Divider,
+  Text,
+  useTheme,
+} from 'react-native-stralom-components';
 import TextInputRounded from '../../components/TextInputRounded';
 import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-community/google-signin';
@@ -20,13 +25,13 @@ const initialCredentials = {
   password: '',
 };
 
-function LoginScreen({navigation, onError}: any) {
+function LoginScreen({navigation, route}: any) {
   const theme = useTheme();
   const [credentials, setCredentials] = useState(initialCredentials);
+  const onSuccess = route.params?.onSuccess;
+  const onError = route.params?.onError;
+
   const styles = stylesheet({});
-  const onLogin = useCallback(() => {
-    console.log('teste');
-  }, []);
 
   const onGoogleSignIn = useCallback(async () => {
     // Get the users ID token
@@ -71,21 +76,9 @@ function LoginScreen({navigation, onError}: any) {
     return auth().signInWithCredential(twitterCredential);
   }, []);
 
-  const onStralomSignIn = useCallback(async () => {
-    try {
-      if (await validateForm()) {
-        return await AuthenticationController.login(
-          credentials.email,
-          credentials.password,
-        );
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  }, []);
-
   const validateForm = useCallback(async () => {
     if (!credentials.password || !credentials.email) {
+      console.log(credentials);
       Toast.show({
         text1: 'Falha ao realizar autenticação',
         text2: 'Verifique o usuário e a senha e tente novamente',
@@ -96,7 +89,44 @@ function LoginScreen({navigation, onError}: any) {
       return false;
     }
     return true;
-  }, []);
+  }, [credentials.password, credentials.email]);
+
+  const onStralomSignIn = useCallback(async () => {
+    console.log('Starting Stralom Sign In');
+    try {
+      if (await validateForm()) {
+        let data = await AuthenticationController.login(
+          credentials.email,
+          credentials.password,
+        );
+        if (onSuccess) {
+          onSuccess(data);
+        }
+        return data;
+      }
+    } catch (e) {
+      console.warn(e);
+      if (e.response?.status === 401) {
+        Toast.show({
+          text1: 'Credenciais invalidas',
+          text2: 'Verifique o usuário e a senha e tente novamente.',
+          type: 'error',
+          visibilityTime: 8000,
+          position: 'bottom',
+        });
+      }
+      if (onError) {
+        onError(e);
+      }
+    }
+  }, [
+    credentials.email,
+    credentials.password,
+    onError,
+    onSuccess,
+    validateForm,
+  ]);
+
   return (
     <AuthView>
       <TextInputRounded
@@ -121,7 +151,7 @@ function LoginScreen({navigation, onError}: any) {
       />
       <ButtonWB
         label={'ENTRAR'}
-        backgroundColor={theme.primary.dark}
+        backgroundColor={theme.primary.dark.color}
         onPress={onStralomSignIn}
       />
       <Text variant={'caption'} style={styles.forgotPasswordText}>
@@ -134,7 +164,7 @@ function LoginScreen({navigation, onError}: any) {
           style={{
             flex: 1,
             borderWidth: 1,
-            borderBottomColor: theme.primary.main,
+            borderBottomColor: theme.primary.main.color,
           }}
         />
         <Text variant={'regular'} style={{paddingHorizontal: 10}}>
@@ -146,7 +176,7 @@ function LoginScreen({navigation, onError}: any) {
           style={{
             flex: 1,
             borderWidth: 1,
-            borderBottomColor: theme.primary.main,
+            borderBottomColor: theme.primary.main.color,
           }}
         />
       </View>

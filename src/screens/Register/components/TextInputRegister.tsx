@@ -1,4 +1,8 @@
-import {ITextInputWI, TextInputWI, useTheme} from 'react-native-stralom-components';
+import {
+  ITextInputWI,
+  TextInputWI,
+  useTheme,
+} from 'react-native-stralom-components';
 import React from 'react';
 
 /**
