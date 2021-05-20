@@ -58,7 +58,7 @@ function LoginScreen({navigation, route}: any) {
       <ButtonWB
         label={'ENTRAR'}
         backgroundColor={theme.primary.dark.color}
-        onPress={() => onStralomSignIn(credentials, onSuccess, onError)}
+        onPress={() => onStralomSignIn(credentials, onError, onSuccess)}
       />
       <Text variant={'caption'} style={styles.forgotPasswordText}>
         Esqueceu sua senha?
